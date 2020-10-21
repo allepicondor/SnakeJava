@@ -23,15 +23,15 @@ class Game extends JFrame {
         c = new Canvas();
         // set background
         c.setBackground(Color.black);
-        int width = 900;
-        int height = 900;
+        int width = 600;
+        int height = 600;
+        int segment = 30;
         // add mouse listener
         add(c);
         setSize(width+17, height+40);
-        board = new Board(900,900,30);
+        board = new Board(width,height,segment);
         snake = new Snake(board);
         food = new Food(board);
-        System.out.println(board.grabPix(29,29)[1]);
         c.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent a) {
@@ -42,7 +42,7 @@ class Game extends JFrame {
             public void keyReleased(KeyEvent a) {
             }
         });
-        int TICKS_PER_SECOND = 20;
+        int TICKS_PER_SECOND = 10;
         final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
         final int MAX_FRAMESKIP = 5;
         int[] vel = new int[]{0, 0};
@@ -63,13 +63,11 @@ class Game extends JFrame {
             if (e == KeyEvent.VK_DOWN){
                 vel = new int[]{0, 1};
             }
-            while (System.currentTimeMillis() > next_game_tick
-                    && loops < MAX_FRAMESKIP) {
-
+            while (System.currentTimeMillis() > next_game_tick && loops < MAX_FRAMESKIP) {
                 snake.move(vel);
                 if (food.currentPos[0] == snake.currentPos[0] && food.currentPos[1] == snake.currentPos[1] ) {
                     TICKS_PER_SECOND += 2;
-                    food.SpawnFood();
+                    food.SpawnFood(snake);
                     snake.EatFood();
                 }
                 for (int[] cord: snake.SnakeBodyCords){
@@ -81,7 +79,7 @@ class Game extends JFrame {
                     }
                     
                 }
-                if (snake.currentPos[0] >= 30 || snake.currentPos[0] < 0 || snake.currentPos[1] >= 30 || snake.currentPos[1] < 0){
+                if (snake.currentPos[0] >= board.columns || snake.currentPos[0] < 0 || snake.currentPos[1] >= board.rows || snake.currentPos[1] < 0){
                     snake = new Snake(board);
                 }else {
                     drawFrame(c.getGraphics(), snake, board);
