@@ -1,8 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 class Game extends JFrame {
 	/**
@@ -15,20 +13,10 @@ class Game extends JFrame {
     Snake snake;
     Food food;
     int e = KeyEvent.VK_DOWN;
-    Game()
+    Game(Canvas canvas,int width,int height,int segment)
     {
-        super("Snake");
-
         // create a empty canvas
-        c = new Canvas();
-        // set background
-        c.setBackground(Color.black);
-        int width = 600;
-        int height = 600;
-        int segment = 30;
-        // add mouse listener
-        add(c);
-        setSize(width+17, height+40);
+        c = canvas;
         board = new Board(width,height,segment);
         snake = new Snake(board);
         food = new Food(board);
@@ -77,7 +65,6 @@ class Game extends JFrame {
                             break;
                         }
                     }
-                    
                 }
                 if (snake.currentPos[0] >= board.columns || snake.currentPos[0] < 0 || snake.currentPos[1] >= board.rows || snake.currentPos[1] < 0){
                     snake = new Snake(board);
@@ -98,8 +85,4 @@ class Game extends JFrame {
         food.draw(g);
     }
     // main class
-    public static void main(String args[])
-    {
-        Game a = new Game();
-    }
 }
