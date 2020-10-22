@@ -36,7 +36,6 @@ class Game extends JFrame {
         int[] vel = new int[]{0, 0};
         double next_game_tick = System.currentTimeMillis();
         int loops;
-        show();
         while (true){
             loops = 0;
             if (e == KeyEvent.VK_LEFT){
